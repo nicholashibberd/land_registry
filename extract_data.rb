@@ -9,9 +9,10 @@ File.open('./example_register.pdf', 'r') do |io|
 
   title_number = /Title Number.*(CS[0-9]*)/.match(register_extract)[1]
   address = /Address of Property\s*:\s(.*)/.match(register_extract)[1]
+  proprietor = /Registered Owners\s*:(.*?)\n\n/m.match(register_extract)[1].strip.gsub(/\n/, '').gsub(/  /, '')
 
   CSV.open('./output.csv', 'w') do |csv|
     csv << ['Title Number', 'Address', 'Proprietor']
-    csv << [title_number, address, nil]
+    csv << [title_number, address, proprietor]
   end
 end
